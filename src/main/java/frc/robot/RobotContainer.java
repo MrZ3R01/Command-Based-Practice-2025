@@ -40,6 +40,7 @@ public class RobotContainer {
       arm.setArmMovementCommand()
     );
   }
+  
   public Command getAutonomousCommand() {
     return Commands.sequence(
       arm.moveArmToNewGoal(Constants.Arm.PID.setpoints.GROUND),

@@ -39,7 +39,7 @@ public class Arm extends SubsystemBase{
     }
     
     public void changeArmGoal(double newGoal){
-        armPID.reset(armEncoder.getPosition());
+        resetPID();
         armPID.setGoal(newGoal);
     }
     
@@ -71,7 +71,6 @@ public class Arm extends SubsystemBase{
     
     public Command moveArmToNewGoal(double newGoal){
         return Commands.sequence(
-            resetPID(),
             changeArmGoalCommand(newGoal),
             setArmMovementCommand().until(this::armAtGoal));
     }
