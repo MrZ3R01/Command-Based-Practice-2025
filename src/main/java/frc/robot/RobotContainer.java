@@ -18,6 +18,7 @@ public class RobotContainer {
   private CommandXboxController controller = new CommandXboxController(0);
   public RobotContainer() {
     configureBindings();
+    setDefaultCommands();
   }
 
   private void configureBindings() {
@@ -26,18 +27,19 @@ public class RobotContainer {
     controller.leftBumper().whileTrue(intake.outtakeBag());
     controller.rightBumper().or(controller.leftBumper()).onFalse(intake.stopIntakeM());
     controller.x().whileTrue(arm.resetEncoderCommand());
-    drivetrain.setDefaultCommand(
-      drivetrain.arcadeDrive(()->controller.getLeftY(), ()->controller.getRightX())
-    );
-
-    arm.setDefaultCommand(
-      arm.setArmMovementCommand()
-    );
-
+    
     controller.a().onTrue(arm.moveArmToNewGoal(Constants.Arm.PID.setpoints.HIGH));
     controller.b().onTrue(arm.moveArmToNewGoal(Constants.Arm.PID.setpoints.GROUND));
   }
 
+  public void setDefaultCommands(){
+    drivetrain.setDefaultCommand(
+      drivetrain.arcadeDrive(()->controller.getLeftY(), ()->controller.getRightX())
+    );
+    arm.setDefaultCommand(
+      arm.setArmMovementCommand()
+    );
+  }
   public Command getAutonomousCommand() {
     return Commands.sequence(
       arm.moveArmToNewGoal(Constants.Arm.PID.setpoints.GROUND),
